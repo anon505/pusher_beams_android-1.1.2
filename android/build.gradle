@@ -1,54 +1,59 @@
-group 'com.pusher.pusher_beams'
-version '1.0-SNAPSHOT'
+group = "com.pusher.pusher_beams"
+version = "1.0-SNAPSHOT"
 
 buildscript {
-    ext.kotlin_version = '1.5.30'
+    ext.kotlin_version = "1.8.0"
     repositories {
         google()
         mavenCentral()
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.1.0'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath("com.android.tools.build:gradle:7.3.1")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version")
     }
 }
 
-rootProject.allprojects {
+allprojects {
     repositories {
         google()
         mavenCentral()
     }
 }
 
-apply plugin: 'com.android.library'
-apply plugin: 'kotlin-android'
+apply plugin: "com.android.library"
+apply plugin: "kotlin-android"
 
 android {
-    compileSdkVersion 31
-    namespace = "com.pusher.pusher_beams"
+    if (project.android.hasProperty("namespace")) {
+        namespace = "com.pusher.pusher_beams"
+    }
+
+    compileSdk = 35
+
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
 
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = '11'
     }
 
     sourceSets {
-        main.java.srcDirs += 'src/main/kotlin'
+        main.java.srcDirs += "src/main/kotlin"
+        test.java.srcDirs += "src/test/kotlin"
     }
 
     defaultConfig {
-        minSdkVersion 19
+        minSdk = 24
     }
-}
 
-dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation("com.google.firebase:firebase-messaging:22.0.0")
-    implementation("com.google.firebase:firebase-iid:21.1.0")
-    implementation("com.pusher:push-notifications-android:1.10.0")
-    testImplementation 'junit:junit:4.12'
+    dependencies {
+        testImplementation("org.jetbrains.kotlin:kotlin-test")
+        implementation("com.google.firebase:firebase-messaging:24.1.0")
+        implementation("com.google.firebase:firebase-iid:21.1.0")
+        implementation("com.pusher:push-notifications-android:1.10.0")
+        testImplementation 'junit:junit:4.13.2'
+    }
 }
